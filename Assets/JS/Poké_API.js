@@ -6,27 +6,26 @@ var table = document.querySelector(".poke_body");
   pokemons.results.forEach(pokemon => {
     pokemon_detail(pokemon);
   });
-  async function pokemon_detail(pokemon) {
-    let pokemon_url = pokemon.url;
-    let detail_request = await fetch(pokemon_url);
-    let detail = await detail_request.json();
-    create_pokemon(detail, detail.types, detail.abilities, detail.stats);
-  }
-})()
-
-function create_pokemon(detail, types, abilities, stats){
+})();
+async function pokemon_detail(pokemon) {
+  let pokemon_url = pokemon.url;
+  let detail_request = await fetch(pokemon_url);
+  let detail = await detail_request.json();
+  create_pokemon(detail);
+}
+function create_pokemon(detail) {
   let type_arr = [];
-  types.forEach(item => {
+  detail.types.forEach(item => {
     type_arr.push(item.type.name);
   });
 
   let ability_arr = [];
-  abilities.forEach(item => {
+  detail.abilities.forEach(item => {
     ability_arr.push(item.ability.name);
   });
 
   let stat_arr = [];
-  stats.forEach(item => {
+  detail.stats.forEach(item => {
     stat_arr.push(item.base_stat + " " + item.stat.name);
   });
 
@@ -44,11 +43,11 @@ function create_pokemon(detail, types, abilities, stats){
     types: type_arr
   };
 
-  draw_table(pokemon)
+  draw_table(pokemon);
 }
 
 function draw_table(pokemon) {
-  return table.innerHTML +=
+  return (table.innerHTML +=
     "<tr>" +
     "<td>" +
     pokemon.id +
@@ -76,5 +75,5 @@ function draw_table(pokemon) {
     "<td>" +
     pokemon.types +
     "</td>" +
-    "</tr>";
+    "</tr>");
 }
