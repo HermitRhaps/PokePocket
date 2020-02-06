@@ -1,79 +1,76 @@
-const api = "https://pokeapi.co/api/v2/pokemon?limit=151";
-var table = document.querySelector(".poke_body");
-(async function connect() {
-  let request = await fetch(api);
-  let pokemons = await request.json();
-  pokemons.results.forEach(pokemon => {
-    pokemon_detail(pokemon);
-  });
-})();
-async function pokemon_detail(pokemon) {
-  let pokemon_url = pokemon.url;
-  let detail_request = await fetch(pokemon_url);
-  let detail = await detail_request.json();
-  create_pokemon(detail);
-}
-function create_pokemon(detail) {
-  let type_arr = [];
-  detail.types.forEach(item => {
-    type_arr.push(item.type.name);
-  });
+const api_url = "https://pokeapi.co/api/v2/pokemon?limit=151";
+var table_container = document.querySelector(".poke_body");
 
-  let ability_arr = [];
-  detail.abilities.forEach(item => {
-    ability_arr.push(item.ability.name);
-  });
+(async function api_connect(){
+    let connect_request = await fetch(api_url);
+    let connect_output = await connect_request.json();
+    let pokemons = [];
 
-  let stat_arr = [];
-  detail.stats.forEach(item => {
-    stat_arr.push(item.base_stat + " " + item.stat.name);
-  });
+    connect_output.results.forEach(async result => {
+        let pokemon_request = await fetch(result.url);
+        let pokemon_output = await pokemon_request.json(); 
 
-  let pokemon = {
-    id: detail.id,
-    name: detail.name,
-    img:
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
-      detail.id +
-      ".png",
-    abilities: ability_arr,
-    stats: stat_arr,
-    weight: detail.weight,
-    height: detail.height,
-    types: type_arr
-  };
+        let pokemon_types = [];
+        let pokemon_abilities = [];
+        let pokemon_stats = [];
 
-  draw_table(pokemon);
-}
+        pokemon_output.types.forEach(types => {
+            pokemon_types.push(types.type.name)
+        })
 
-function draw_table(pokemon) {
-  return (table.innerHTML +=
-    "<tr>" +
-    "<td>" +
-    pokemon.id +
-    "</td>" +
-    "<td>" +
-    pokemon.name +
-    "</td>" +
-    "<td>" +
-    '<img src="' +
-    pokemon.img +
-    '"/>' +
-    "</td>" +
-    "<td>" +
-    pokemon.abilities +
-    "</td>" +
-    "<td>" +
-    pokemon.stats +
-    "</td>" +
-    "<td>" +
-    pokemon.weight +
-    "</td>" +
-    "<td>" +
-    pokemon.height +
-    "</td>" +
-    "<td>" +
-    pokemon.types +
-    "</td>" +
-    "</tr>");
-}
+        pokemon_output.abilities.forEach(abilities => {
+            pokemon_abilities.push(abilities.ability.name)
+        })
+
+        pokemon_output.stats.forEach(stats => {
+            pokemon_stats.push(stats.base_stat + " " + stats.stat.name)
+        })
+
+
+        let pokemon = {
+            id: pokemon_output.id,
+            name: pokemon_output.name,
+            sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon_output.id + ".png",
+            types: pokemon_types,
+            abilities: pokemon_abilities,
+            stats: pokemon_stats,
+            weight: pokemon_output.weight,
+            height: pokemon_output.height
+        }
+
+        pokemons.push(pokemon)
+
+        // pokemons.forEach(pokenon => {
+        //     "<tr>" +
+        //     "<td>" +
+        //     pokenon.id +
+        //     "</td>" +
+        //     "<td>" +
+        //     pokenon.name +
+        //     "</td>" +
+        //     "<td>" +
+        //     '<img src="' +
+        //     pokenon.sprite +
+        //     '"/>' +
+        //     "</td>" +
+        //     "<td>" +
+        //     pokenon.abilities +
+        //     "</td>" +
+        //     "<td>" +
+        //     pokenon.stats +
+        //     "</td>" +
+        //     "<td>" +
+        //     pokenon.weight +
+        //     "</td>" +
+        //     "<td>" +
+        //     pokenon.height +
+        //     "</td>" +
+        //     "<td>" +
+        //     pokenon.types +
+        //     "</td>" +
+        //     "</tr>"
+        // })
+
+    });
+
+})()
