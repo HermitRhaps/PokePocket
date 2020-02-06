@@ -1,6 +1,6 @@
 const api = "https://pokeapi.co/api/v2/pokemon?limit=151";
 var table = document.querySelector(".poke_body");
-async function connect() {
+(async function connect() {
   let request = await fetch(api);
   let pokemons = await request.json();
   pokemons.results.forEach(pokemon => {
@@ -10,11 +10,11 @@ async function connect() {
     let pokemon_url = pokemon.url;
     let detail_request = await fetch(pokemon_url);
     let detail = await detail_request.json();
-    draw_table(detail, detail.types, detail.abilities, detail.stats);
+    create_pokemon(detail, detail.types, detail.abilities, detail.stats);
   }
-}
+})()
 
-function draw_table(detail, types, abilities, stats) {
+function create_pokemon(detail, types, abilities, stats){
   let type_arr = [];
   types.forEach(item => {
     type_arr.push(item.type.name);
@@ -37,10 +37,18 @@ function draw_table(detail, types, abilities, stats) {
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
       detail.id +
       ".png",
+    abilities: ability_arr,
+    stats: stat_arr,
     weight: detail.weight,
-    height: detail.height
+    height: detail.height,
+    types: type_arr
   };
-  table.innerHTML +=
+
+  draw_table(pokemon)
+}
+
+function draw_table(pokemon) {
+  return table.innerHTML +=
     "<tr>" +
     "<td>" +
     pokemon.id +
@@ -54,10 +62,10 @@ function draw_table(detail, types, abilities, stats) {
     '"/>' +
     "</td>" +
     "<td>" +
-    ability_arr +
+    pokemon.abilities +
     "</td>" +
     "<td>" +
-    stat_arr +
+    pokemon.stats +
     "</td>" +
     "<td>" +
     pokemon.weight +
@@ -66,8 +74,7 @@ function draw_table(detail, types, abilities, stats) {
     pokemon.height +
     "</td>" +
     "<td>" +
-    type_arr +
+    pokemon.types +
     "</td>" +
     "</tr>";
 }
-connect();
