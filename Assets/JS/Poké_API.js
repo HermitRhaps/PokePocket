@@ -6,8 +6,8 @@ var table_container = document.querySelector(".poke_body");
     let connect_output = await connect_request.json();
     let pokemons = [];
 
-    connect_output.results.forEach(async result => {
-        let pokemon_request = await fetch(result.url);
+    for(let i = 0; i < connect_output.results.length; i++){
+        let pokemon_request = await fetch(connect_output.results[i].url);
         let pokemon_output = await pokemon_request.json(); 
 
         let pokemon_types = [];
@@ -26,7 +26,6 @@ var table_container = document.querySelector(".poke_body");
             pokemon_stats.push(stats.base_stat + " " + stats.stat.name)
         })
 
-
         let pokemon = {
             id: pokemon_output.id,
             name: pokemon_output.name,
@@ -39,38 +38,40 @@ var table_container = document.querySelector(".poke_body");
         }
 
         pokemons.push(pokemon)
+    }
+    draw_table(pokemons)
+})();
 
-        // pokemons.forEach(pokenon => {
-        //     "<tr>" +
-        //     "<td>" +
-        //     pokenon.id +
-        //     "</td>" +
-        //     "<td>" +
-        //     pokenon.name +
-        //     "</td>" +
-        //     "<td>" +
-        //     '<img src="' +
-        //     pokenon.sprite +
-        //     '"/>' +
-        //     "</td>" +
-        //     "<td>" +
-        //     pokenon.abilities +
-        //     "</td>" +
-        //     "<td>" +
-        //     pokenon.stats +
-        //     "</td>" +
-        //     "<td>" +
-        //     pokenon.weight +
-        //     "</td>" +
-        //     "<td>" +
-        //     pokenon.height +
-        //     "</td>" +
-        //     "<td>" +
-        //     pokenon.types +
-        //     "</td>" +
-        //     "</tr>"
-        // })
-
-    });
-
-})()
+function draw_table(pokemons){
+    for(let i = 0; i < pokemons.length; i++){
+    table_container.innerHTML +=
+        "<tr>" +
+        "<td>" +
+        pokemons[i].id +
+        "</td>" +
+        "<td>" +
+        pokemons[i].name +
+        "</td>" +
+        "<td>" +
+        '<img src="' +
+        pokemons[i].sprite +
+        '"/>' +
+        "</td>" +
+        "<td>" +
+        pokemons[i].abilities +
+        "</td>" +
+        "<td>" +
+        pokemons[i].stats +
+        "</td>" +
+        "<td>" +
+        pokemons[i].weight +
+        "</td>" +
+        "<td>" +
+        pokemons[i].height +
+        "</td>" +
+        "<td>" +
+        pokemons[i].types +
+        "</td>" +
+        "</tr>"
+    }
+}
