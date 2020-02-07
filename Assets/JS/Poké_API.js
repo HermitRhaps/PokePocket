@@ -1,5 +1,6 @@
 const api_url = "https://pokeapi.co/api/v2/pokemon?limit=151";
 var table_container = document.querySelector(".poke_body");
+var pagination = document.querySelector(".pagination");
 
 (async function api_connect(){
     let connect_request = await fetch(api_url);
@@ -39,39 +40,52 @@ var table_container = document.querySelector(".poke_body");
 
         pokemons.push(pokemon)
     }
+
     draw_table(pokemons)
 })();
 
 function draw_table(pokemons){
+    let pokemon_count = 25;
+    // let current_page = 1;
+    // let item_start = current_page * pokemon_count
+    // let item_end = item_start * pokemon_count
+    // let pages = Math.ceil(pokemons.length / pokemon_count);
+    // let table_output = pokemons.slice(0, item_end)
+    // let page_item = document.querySelectorAll(".page-item");
+    // console.log(item_end)
     for(let i = 0; i < pokemons.length; i++){
-    table_container.innerHTML +=
-        "<tr>" +
-        "<td>" +
-        pokemons[i].id +
-        "</td>" +
-        "<td>" +
-        pokemons[i].name +
-        "</td>" +
-        "<td>" +
-        '<img src="' +
-        pokemons[i].sprite +
-        '"/>' +
-        "</td>" +
-        "<td>" +
-        pokemons[i].abilities +
-        "</td>" +
-        "<td>" +
-        pokemons[i].stats +
-        "</td>" +
-        "<td>" +
-        pokemons[i].weight +
-        "</td>" +
-        "<td>" +
-        pokemons[i].height +
-        "</td>" +
-        "<td>" +
-        pokemons[i].types +
-        "</td>" +
-        "</tr>"
+        table_container.innerHTML +=
+            "<tr>" +
+            "<td>" +
+            pokemons[i].id +
+            "</td>" +
+            "<td>" +
+            pokemons[i].name +
+            "</td>" +
+            "<td>" +
+            '<img src="' +
+            pokemons[i].sprite +
+            '"/>' +
+            "</td>" +
+            "<td>" +
+            pokemons[i].abilities +
+            "</td>" +
+            "<td>" +
+            pokemons[i].stats +
+            "</td>" +
+            "<td>" +
+            pokemons[i].weight +
+            "</td>" +
+            "<td>" +
+            pokemons[i].height +
+            "</td>" +
+            "<td>" +
+            pokemons[i].types +
+            "</td>" +
+            "</tr>"
+}
+    for(let i = 0; i < pokemon_count; i++){
+        pagination.innerHTML +='<li class="page-item">'+'<span class="page-link">'+ (i + 1) +'</span>'+'</li>'
     }
+
 }
