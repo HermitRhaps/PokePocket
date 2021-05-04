@@ -116,59 +116,51 @@ const List = () => {
               : false}
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          {limited.current ? limited.current.base_experience : false}
-        </Grid>
         <Dialog open={limited.dialog}>
           <DialogTitle>{limited.current.name}</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" component="h6">
-                    Sprites:
-                  </Typography>
-                </Grid>
-                {limited.dialog
-                  ? Object.entries(limited.current.sprites)
-                      .filter(([index, value]) => typeof value === "string")
-                      .map(([index, value]) => (
-                        <Grid item xs={2}>
-                          <img src={value} />
-                        </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <DialogContentText>Sprites:</DialogContentText>
+                <DialogContent>
+                  {limited.dialog
+                    ? Object.entries(limited.current.sprites)
+                        .filter(([index, value]) => typeof value === "string")
+                        .map(([index, value]) => (
+                          <img src={value} key={index.toString() + value} />
+                        ))
+                    : false}
+                </DialogContent>
+                <DialogContentText>Stats:</DialogContentText>
+                <DialogContent>
+                  {limited.dialog
+                    ? limited.current.stats.map((stat, index) => (
+                        <Typography
+                          variant="h6"
+                          component="h6"
+                          key={index.toString() + stat}
+                        >
+                          {stat.stat.name} : {stat.base_stat}
+                        </Typography>
                       ))
-                  : false}
+                    : false}
+                </DialogContent>
+                <DialogContentText>Abilities:</DialogContentText>
+                <DialogContent>
+                  {limited.dialog
+                    ? limited.current.abilities.map((ability, index) => (
+                        <Typography
+                          variant="h6"
+                          component="h6"
+                          key={index.toString() + ability}
+                        >
+                          {ability.ability.name}
+                        </Typography>
+                      ))
+                    : false}
+                </DialogContent>
               </Grid>
-            </DialogContentText>
-            <DialogContentText>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <MList>
-                    <ListItem>
-                      <ListItemText>
-                        <Typography variant="h6" component="h6">
-                          Height: {limited.current.height}
-                        </Typography>
-                      </ListItemText>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText>
-                        <Typography variant="h6" component="h6">
-                          Weight: {limited.current.weight}
-                        </Typography>
-                      </ListItemText>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText>
-                        <Typography variant="h6" component="h6">
-                          Base experience: {limited.current.base_experience}
-                        </Typography>
-                      </ListItemText>
-                    </ListItem>
-                  </MList>
-                </Grid>
-              </Grid>
-            </DialogContentText>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button variant="outlined" onClick={dialogClose}>
