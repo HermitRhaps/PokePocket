@@ -1,5 +1,5 @@
 export const pokeFlow = {
-  pokeListRequestOperation: async (limit = 10, offset = 0) => {
+  pokeListRequestOperation: async (limit, offset) => {
     const pokeRequest = await fetch(
       `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
     );

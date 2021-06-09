@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Grid, Typography } from "@material-ui/core";
-import List from "./List";
+
 import PokeList from "./PokeList";
 const App = () => {
   return (
