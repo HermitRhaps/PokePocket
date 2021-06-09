@@ -1,30 +1,75 @@
 import React from "react";
-
-const PokeDetailsCard = ({ details }) => {
+import {
+  Grid,
+  Dialog,
+  Chip,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  makeStyles,
+  Button,
+  Typography,
+  Divider,
+} from "@material-ui/core";
+const useStyle = makeStyles({
+  wrapper: {
+    textAlign: "center",
+  },
+});
+const PokeDetailsCard = ({ details, close }) => {
+  const classes = useStyle();
   return (
-    <div>
-      <div>{details.name}</div>
-      <div>
-        {Object.entries(details.sprites).map(([key, value]) => {
-          if (value && typeof value === "string") {
-            return <img key={value + key} src={value} alt={key} />;
-          }
-        })}
-      </div>
-      <div>
-        {details.stats.map((detail, index) => (
-          <h6 key={detail.stat.name + index}>
-            {detail.stat.name}: {detail.base_stat}
-          </h6>
-        ))}
-      </div>
-      <div>
-        {details.types.map((detail, index) => (
-          <h6 key={detail.type.name + index}>{detail.type.name}</h6>
-        ))}
-      </div>
-      <div></div>
-    </div>
+    <Dialog open={true}>
+      <DialogTitle>
+        <Grid container>
+          <Grid item xs={5}>
+            {details.name}
+          </Grid>
+        </Grid>
+      </DialogTitle>
+      <DialogContent>
+        <Grid container>
+          <Grid item xs={12}>
+            <Grid container>
+              {details.types.map((detail, index) => (
+                <Grid item xs={2} key={detail.type.name + index}>
+                  <Chip label={detail.type.name} variant="outlined" />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container className={classes.wrapper}>
+              {Object.entries(details.sprites).map(([key, value]) => {
+                if (value && typeof value === "string") {
+                  return (
+                    <Grid item xs={3} key={value + key}>
+                      <img src={value} alt={key} />
+                    </Grid>
+                  );
+                }
+              })}
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container spacing={1}>
+              {details.stats.map((detail, index) => (
+                <Grid item xs={12} key={detail.stat.name + index}>
+                  <Typography variant="h7" component="h7">
+                    {detail.stat.name}:{detail.base_stat}
+                  </Typography>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="outlined" onClick={() => close()}>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 export default PokeDetailsCard;
