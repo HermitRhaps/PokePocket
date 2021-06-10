@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { pokeFlow } from "../logic/pokeFlow";
 import PokeCard from "./PokeCard";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Paper } from "@material-ui/core";
 import Control from "./Control";
 const useStyle = makeStyles({
   wrapper: {
     textAlign: "center",
+  },
+  card: {
+    "&:hover": { background: "#f0ffff" },
   },
 });
 const PokeList = () => {
@@ -22,11 +25,13 @@ const PokeList = () => {
     <Grid container>
       <Control limit={10} offset={0} changeRequest={callRequests} />
       <Grid item xs={12}>
-        <Grid container className={classes.wrapper}>
+        <Grid container className={classes.wrapper} spacing={2}>
           {pokeList.length
             ? pokeList.map((poke) => (
                 <Grid item xs={3} key={poke.id}>
-                  <PokeCard pokemon={poke} />
+                  <Paper elevation={3} className={classes.card}>
+                    <PokeCard pokemon={poke} />
+                  </Paper>
                 </Grid>
               ))
             : false}
